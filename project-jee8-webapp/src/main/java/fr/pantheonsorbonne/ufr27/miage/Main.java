@@ -24,6 +24,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
+import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.UserDAO;
@@ -31,10 +32,12 @@ import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
+import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.GymServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.InvoicingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PaymentServiceImpl;
+import fr.pantheonsorbonne.ufr27.miage.ejb.impl.ReservationServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.exception.ExceptionMapper;
 import fr.pantheonsorbonne.ufr27.miage.jms.PaymentValidationAckownledgerBean;
 import fr.pantheonsorbonne.ufr27.miage.jms.conf.ConnectionFactorySupplier;
@@ -63,11 +66,14 @@ public class Main {
 					protected void configure() {
 
 						bind(GymServiceImpl.class).to(GymService.class);
+						bind(ReservationServiceImpl.class).to(ReservationService.class);
 
 						bind(PaymentServiceImpl.class).to(PaymentService.class);
 						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
 						bind(InvoiceDAO.class).to(InvoiceDAO.class);
 						bind(UserDAO.class).to(UserDAO.class);
+						bind(FlightDAO.class).to(FlightDAO.class);
+
 						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(PaymentDAO.class).to(PaymentDAO.class);
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
