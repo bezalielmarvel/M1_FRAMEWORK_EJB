@@ -71,6 +71,9 @@
 			<xsd:element name="departure" type="xsd:string"></xsd:element>
 			<xsd:element name="arrival" type="xsd:string"></xsd:element>
 			<xsd:element name="placesDisponibles" type="xsd:int"></xsd:element>
+			<xsd:element name="prixClasseA" type="xsd:double"></xsd:element>
+			<xsd:element name="prixClasseB" type="xsd:double"></xsd:element>
+			<xsd:element name="prixClasseC" type="xsd:double"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -78,7 +81,7 @@
 	<xsd:complexType name="reservation">
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:int"></xsd:element>
-			<xsd:element name="prix" type="xsd:int"></xsd:element>
+			<xsd:element name="prix" type="xsd:double"></xsd:element>
 			<xsd:element name="generatedId" type="xsd:string"></xsd:element>
 			<xsd:element name="vol" type="xsd:string"></xsd:element>
 			<xsd:element name="place" type="xsd:string"></xsd:element>
@@ -94,6 +97,8 @@
 			<xsd:element name="classe" type="xsd:string"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
+	
+
 	
 	
 	<xsd:element name="place" type="place"></xsd:element>

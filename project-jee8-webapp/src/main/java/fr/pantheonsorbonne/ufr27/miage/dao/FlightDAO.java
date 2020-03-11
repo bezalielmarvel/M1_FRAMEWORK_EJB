@@ -1,6 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
@@ -71,7 +75,7 @@ public class FlightDAO {
 	}
 	
 
-	public List<Vol> getFlightFromArrival(String arrival) {
+	public List<Flight> getFlightFromArrival(String arrival) {
 		
 		
 		int ageMax = 25;
@@ -90,26 +94,36 @@ public class FlightDAO {
 		
 		
 		List<Flight> flights = em.createQuery(query).getResultList();
-		List<Vol> vols = new ArrayList<Vol>();
-		for (Flight flight : flights) {
-			Vol v = new ObjectFactory().createVol();
-			v.setId(flight.getId());
-			v.setName(flight.getArrival());
-			v.setDeparture(flight.getDeparture());
-			v.setArrival(flight.getArrival());
-			v.setDate(flight.getDate().toString());
-			
-			int countAvailable = flight.getSeats().stream()
-	                .filter(c -> c.isAvailable() == true)
-	                .collect(Collectors.toList()).size()
-					;	
-			
-			v.setPlacesDisponibles(countAvailable);
-			
-			vols.add(v);
-		}
+
+		return flights;
+	}
+
+	public List<Flight> getFlights(String arrival, String departure, String date) {
 		
-		// TODO Auto-generated method stub
-		return vols;
+		int ageMax = 25;
+
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+
+		CriteriaQuery<Flight> query = builder.createQuery(Flight.class);
+		
+		Root<Flight> i = query.from(Flight.class);
+		
+		
+	    Join<Flight, Aeroport> joinOrg = i.join("arrival");
+	    Join<Flight, Aeroport> joinRoles = i.join("departure");
+
+
+	    
+	    Predicate p1 = builder.equal(joinRoles.get("IATA"),arrival);
+	    Predicate p2 = builder.equal(joinOrg.get("IATA"), departure);
+	    Predicate p3 = builder.equal(i.get("date"), date);
+
+	    query.where(builder.and(p1, p2, p3));
+		
+		
+		List<Flight> flights = em.createQuery(query).getResultList();
+		
+		return flights;
+
 	}
 }

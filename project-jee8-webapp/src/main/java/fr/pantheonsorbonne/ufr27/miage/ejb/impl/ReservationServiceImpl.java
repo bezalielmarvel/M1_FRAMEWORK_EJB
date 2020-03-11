@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
@@ -20,6 +22,9 @@ public class ReservationServiceImpl implements ReservationService {
 	@Inject
 	EntityManager em;
 	
+	@Inject
+	PriceComputingService priceService;
+	
 	private static double price = 100;
 	
 	private final static Random rand = new Random();
@@ -27,6 +32,8 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public String createReservation(int flightId, int customerId, String classe) {
 
+		//todo rejeter si aucune place disponible
+		
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 
@@ -34,14 +41,21 @@ public class ReservationServiceImpl implements ReservationService {
 		t.setCustomer(em.find(Customer.class, customerId));
 		
 		Flight f = em.find(Flight.class, flightId);
-		f.getSeats().stream()
-        .filter(c -> c.isAvailable() == true)
-        .collect(Collectors.toList()).get(1).setAvailable(false);
+		
+		double price = priceService.calculatePrice(f).get(classe);
+		
+		List<Seat> seats = f.getSeats().stream()
+        .filter(c -> c.isAvailable() == true && classe.equals(c.getClasse()))
+        .collect(Collectors.toList());
+		
+		seats.get(1).setAvailable(false);
+		
 		em.persist(f);
 		
-		t.setSeat(f.getSeats().get(1));
-		t.setPrice((float) this.calculatePrice(f, classe));
+		t.setSeat(seats.get(1));
+		t.setPrice(price);
 		t.setGeneratedId(this.generateReservationID(12));
+		
 		em.persist(t);
 		
 		tx.commit();

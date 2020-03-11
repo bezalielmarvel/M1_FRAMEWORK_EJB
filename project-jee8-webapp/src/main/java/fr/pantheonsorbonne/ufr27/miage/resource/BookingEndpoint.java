@@ -23,7 +23,7 @@ public class BookingEndpoint {
 	ReservationService service;
 	
 	@POST
-	public Response createReservationc(@QueryParam("flightId") int flightId, @QueryParam("customerId") int customerId, @QueryParam("classe") String classe) {
+	public Response createReservation(@QueryParam("flightId") int flightId, @QueryParam("customerId") int customerId, @QueryParam("classe") String classe) {
 		service.createReservation(flightId, customerId, classe);
 		return Response.ok().build();
 	}

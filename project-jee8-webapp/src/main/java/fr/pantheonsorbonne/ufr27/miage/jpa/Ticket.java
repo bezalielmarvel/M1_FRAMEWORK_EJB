@@ -22,7 +22,7 @@ public class Ticket {
 	@OneToOne(cascade = CascadeType.ALL)
 	Customer customer;
 	
-	float price;
+	double price;
 
 	public int getId() {
 		return id;
@@ -57,11 +57,11 @@ public class Ticket {
 		this.customer = customer;
 	}
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	
