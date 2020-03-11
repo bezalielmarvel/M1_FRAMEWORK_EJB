@@ -33,12 +33,6 @@ public class FlightEndpoint {
 	@Inject
 	FlightService service;
 
-	@Inject
-	PaymentValidationAckownledgerBean b1_;
-
-	@Inject
-	PaymentProcessorBean b2_;
-
 	@GET
 	@Path("/{flightId}")
 	public Vol getVol(@PathParam("flightId") int flightId) {

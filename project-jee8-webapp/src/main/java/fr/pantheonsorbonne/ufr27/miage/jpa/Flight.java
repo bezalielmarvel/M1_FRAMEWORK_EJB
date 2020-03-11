@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class Flight {
 	@OneToOne(cascade = CascadeType.ALL)
 	Company company;
 	
-	Date date;
+	LocalDate date;
 	
 	LocalTime arrivalTime;
 	
@@ -53,11 +54,11 @@ public class Flight {
 //		this.flightDuration = Duration.between(this.departureTime, this.arrivalTime);
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

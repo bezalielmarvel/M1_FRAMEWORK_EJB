@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,12 +112,11 @@ public class FlightDAO {
 		
 	    Join<Flight, Aeroport> joinOrg = i.join("arrival");
 	    Join<Flight, Aeroport> joinRoles = i.join("departure");
-
-
+	    
 	    
 	    Predicate p1 = builder.equal(joinRoles.get("IATA"),arrival);
 	    Predicate p2 = builder.equal(joinOrg.get("IATA"), departure);
-	    Predicate p3 = builder.equal(i.get("date"), date);
+	    Predicate p3 = builder.equal(i.get("date"), LocalDate.parse(date));
 
 	    query.where(builder.and(p1, p2, p3));
 		

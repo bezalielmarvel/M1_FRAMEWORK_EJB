@@ -117,7 +117,7 @@ public class Main {
 		SLF4JBridgeHandler.install();
 		final HttpServer server = startServer();
 
-		BrokerUtils.startBroker();
+		//BrokerUtils.startBroker();
 
 		startH2Console();
 

@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +45,7 @@ public class InitializeServiceImpl implements InitializeService {
 		af.setId(1);
 		af.setName("AF");
 		
-		Date date = new Date();
+		LocalDate date = LocalDate.of(2020,3,11);
 		
 		// FLIGHT 1
 		Flight f1 = new Flight();
@@ -61,39 +62,6 @@ public class InitializeServiceImpl implements InitializeService {
 		f1.setDepartureTime(departureTimeF1);
 		f1.setFlightDuration();
 		
-		List<Seat> seats = new ArrayList<Seat>();
-		
-		for(int i=0; i<30; i++) {
-			Seat s = new Seat();
-			s.setFlight(f1);
-			s.setAvailable(true);
-			s.setClasse("A");
-			seats.add(s);	
-			em.persist(s);
-		}
-		
-		for(int i=0; i<30; i++) {
-			Seat s = new Seat();
-			s.setFlight(f1);
-			s.setAvailable(true);
-			s.setClasse("B");
-			seats.add(s);	
-			em.persist(s);
-		}
-		
-		for(int i=0; i<30; i++) {
-			Seat s = new Seat();
-			s.setFlight(f1);
-			s.setAvailable(true);
-			s.setClasse("C");
-			seats.add(s);	
-			em.persist(s);
-		}
-		
-		f1.setSeats(seats);
-		em.persist(f1);
-		
-		
 		/////// FLIGHT 2 ///////
 		Flight f2 = new Flight();
 		f2.setId(6256);
@@ -108,9 +76,6 @@ public class InitializeServiceImpl implements InitializeService {
 		f2.setArrivalTime(arrivalTimeF2);
 		f2.setDepartureTime(departureTimeF2);
 		f2.setFlightDuration();
-		
-		f2.setSeats(seats);
-		em.persist(f2);
 		
 		/////// FLIGHT 3 ///////
 		Flight f3 = new Flight();
@@ -127,9 +92,103 @@ public class InitializeServiceImpl implements InitializeService {
 		f3.setDepartureTime(departureTimeF3);
 		f3.setFlightDuration();
 		
-		f3.setSeats(seats);
-		em.persist(f3);
 		
+		List<Seat> seatsf1 = new ArrayList<Seat>();
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f1);
+			s.setAvailable(true);
+			s.setClasse("A");
+			seatsf1.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f1);
+			s.setAvailable(true);
+			s.setClasse("B");
+			seatsf1.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f1);
+			s.setAvailable(true);
+			s.setClasse("C");
+			seatsf1.add(s);	
+			em.persist(s);
+		}
+		
+		f1.setSeats(seatsf1);
+		em.persist(f1);
+		
+		List<Seat> seatsf2 = new ArrayList<Seat>();
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f2);
+			s.setAvailable(true);
+			s.setClasse("A");
+			seatsf2.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f2);
+			s.setAvailable(true);
+			s.setClasse("B");
+			seatsf2.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f2);
+			s.setAvailable(true);
+			s.setClasse("C");
+			seatsf2.add(s);	
+			em.persist(s);
+		}
+		
+		f2.setSeats(seatsf2);
+		em.persist(f2);
+		
+		List<Seat> seatsf3 = new ArrayList<Seat>();
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f3);
+			s.setAvailable(true);
+			s.setClasse("A");
+			seatsf3.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f3);
+			s.setAvailable(true);
+			s.setClasse("B");
+			seatsf3.add(s);	
+			em.persist(s);
+		}
+		
+		for(int i=0; i<30; i++) {
+			Seat s = new Seat();
+			s.setFlight(f3);
+			s.setAvailable(true);
+			s.setClasse("C");
+			seatsf3.add(s);	
+			em.persist(s);
+		}
+		
+		f3.setSeats(seatsf3);
+		em.persist(f3);
+
 		em.persist(prs);
 		em.persist(bdx);
 		em.persist(af);
