@@ -38,7 +38,7 @@ public class FlightDAO {
 			throw new NoSuchUserException();
 		}
 		Vol vol = new ObjectFactory().createVol();
-		vol.setName(flight.getName());
+//		vol.setName(flight.getName());
 		return vol;
 
 	}

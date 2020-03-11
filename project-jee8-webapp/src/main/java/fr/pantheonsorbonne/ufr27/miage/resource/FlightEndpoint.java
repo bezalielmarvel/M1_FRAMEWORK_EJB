@@ -28,8 +28,8 @@ import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Vol;
 public class FlightEndpoint {
 	
 	@Inject
-	FlightDAO dao
-	;
+	FlightDAO dao;
+	
 	@Inject
 	FlightService service;
 

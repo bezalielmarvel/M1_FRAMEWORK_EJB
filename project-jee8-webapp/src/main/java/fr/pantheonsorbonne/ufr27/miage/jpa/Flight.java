@@ -1,10 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,10 +33,25 @@ public class Flight {
 	@OneToMany(mappedBy = "flight")
 	List<Seat> seats = new ArrayList<Seat>();
 	
-	String name;
+	@OneToOne(cascade = CascadeType.ALL)
+	Company company;
 	
 	Date date;
 	
+	LocalTime arrivalTime;
+	
+	LocalTime departureTime;
+	
+	int flightDuration;
+
+	public int getFlightDuration() {
+		return flightDuration;
+	}
+
+	public void setFlightDuration() {
+		this.flightDuration = (int) ((MINUTES.between(this.arrivalTime, this.departureTime) + 1440) % 1440);
+//		this.flightDuration = Duration.between(this.departureTime, this.arrivalTime);
+	}
 
 	public Date getDate() {
 		return date;
@@ -47,6 +65,23 @@ public class Flight {
 		return seats;
 	}
 	
+	
+	public LocalTime getArrivalTime() {
+		return arrivalTime;
+	}
+
+	public void setArrivalTime(LocalTime arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public LocalTime getDepartureTime() {
+		return departureTime;
+	}
+
+	public void setDepartureTime(LocalTime departureTime) {
+		this.departureTime = departureTime;
+	}
+
 	public void setSeats(List<Seat> seats) {
 		this.seats = seats;
 	}
@@ -59,12 +94,12 @@ public class Flight {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public String getArrival() {
