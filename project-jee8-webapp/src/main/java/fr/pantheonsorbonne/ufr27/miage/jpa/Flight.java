@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -24,7 +25,11 @@ public class Flight {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
-
+	
+	int number;
+	
+	LocalDate date;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	Airport arrival;
 
@@ -37,21 +42,27 @@ public class Flight {
 	@OneToOne(cascade = CascadeType.ALL)
 	Company company;
 	
-	LocalDate date;
-	
 	LocalTime arrivalTime;
 	
 	LocalTime departureTime;
 	
 	int flightDuration;
+	
+	public int getNumber() {
+		return number;
+	}
 
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
 	public int getFlightDuration() {
 		return flightDuration;
 	}
 
 	public void setFlightDuration() {
-		this.flightDuration = (int) ((MINUTES.between(this.arrivalTime, this.departureTime) + 1440) % 1440);
-//		this.flightDuration = Duration.between(this.departureTime, this.arrivalTime);
+		//this.flightDuration = (int) ((MINUTES.between(this.arrivalTime, this.departureTime) + 1440) % 1440);
+		this.flightDuration = (int) Duration.between(this.departureTime, this.arrivalTime).toMinutes();
 	}
 
 	public LocalDate getDate() {

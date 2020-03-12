@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
@@ -15,12 +17,18 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Ticket;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Vol;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 
 public class ReservationServiceImpl implements ReservationService {
 
 	@Inject
 	EntityManager em;
+	
+	@Inject
+	FlightDAO dao;
 	
 	@Inject
 	PriceComputingService priceService;
@@ -30,17 +38,19 @@ public class ReservationServiceImpl implements ReservationService {
 	private final static Random rand = new Random();
 
 	@Override
-	public String createReservation(int flightId, int customerId, String classe) {
+	public Booking createReservation(int flightNumber, int customerId, String classe, String date) {
 
 		//todo rejeter si aucune place disponible
 		
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 
-		Ticket t = new Ticket();
+		Reservation t = new Reservation();
 		t.setCustomer(em.find(Customer.class, customerId));
 		
-		Flight f = em.find(Flight.class, flightId);
+		int flightID = dao.getFlightFromNumberAndDate(flightNumber, date).getId();
+		
+		Flight f = em.find(Flight.class, flightID);
 		
 		double price = priceService.calculatePrice(f).get(classe);
 		
@@ -48,22 +58,50 @@ public class ReservationServiceImpl implements ReservationService {
         .filter(c -> c.isAvailable() == true && classe.equals(c.getClasse()))
         .collect(Collectors.toList());
 		
-		seats.get(1).setAvailable(false);
+		int seatIndex;
+		
+		while(true) {
+			Random r = new Random();
+			int random = r.nextInt((seats.size() - 0) + 1) + 0;
+			if(seats.get(random).isAvailable()) {
+				seatIndex = random;
+				seats.get(random).setAvailable(false);
+				break;
+			}
+		}
 		
 		em.persist(f);
 		
-		t.setSeat(seats.get(1));
+		t.setSeat(seats.get(seatIndex));
 		t.setPrice(price);
-		t.setGeneratedId(this.generateReservationID(12));
+		t.setPaymentCode();
 		
+		Booking b = new ObjectFactory().createBooking();
+		b.setId(t.getId());
+		b.setPaymentCode(t.getPaymentCode());
+		b.setUser(t.getCustomer().getId());
+		
+//		t.setGeneratedId(this.generateReservationID(12));
+//		t.setBooking(b);
 		em.persist(t);
 		
 		tx.commit();
 
-		return "RESERVATION FAITE";
+		return b;
 		
 	}
-
+	
+//	@Override
+//	public Booking getReservation(int customerId) {
+//		
+//		EntityTransaction tx = em.getTransaction();
+//		tx.begin();
+//		
+//		
+//		
+//
+//	}
+	
 	@Override
 	public void cancelReservation(String reservationId) {
 		// TODO Auto-generated method stub

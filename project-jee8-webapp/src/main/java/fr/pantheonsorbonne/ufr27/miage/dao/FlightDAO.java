@@ -44,6 +44,28 @@ public class FlightDAO {
 
 	}
 	
+	public Flight getFlightFromNumberAndDate(int flightNumber, String date) {
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+
+		CriteriaQuery<Flight> query = builder.createQuery(Flight.class);
+		
+		Root<Flight> i = query.from(Flight.class);
+	    
+	    Predicate p1 = builder.equal(i.get("number"), flightNumber);
+	    Predicate p2 = builder.equal(i.get("date"), LocalDate.parse(date));	    
+
+	    query.select(i);
+	    query.where(builder.and(p1,p2));
+	    
+		List<Flight> flights = em.createQuery(query).getResultList();
+		
+		Flight flight = flights.get(0);
+
+		return flight;
+		
+	}
+	
 	public List<Seat> getSeatsFromFlight(int id) {
 		Flight flight = em.find(Flight.class, id);
 		return flight.getSeats();

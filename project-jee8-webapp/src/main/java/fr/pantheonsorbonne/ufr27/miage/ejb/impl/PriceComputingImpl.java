@@ -9,7 +9,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Ticket;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 
 public class PriceComputingImpl implements PriceComputingService {
 

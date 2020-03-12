@@ -14,6 +14,8 @@ public class Seat {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 		
+	int number;
+	
 	String classe;
 	
 	boolean available = true;
@@ -21,6 +23,14 @@ public class Seat {
 	@ManyToOne(cascade = CascadeType.ALL)
 	Flight flight;
 	
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
 	public int getId() {
 		return id;
 	}

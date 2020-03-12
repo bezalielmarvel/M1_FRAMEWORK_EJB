@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import fr.pantheonsorbonne.ufr27.miage.ejb.InitializeService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
+import fr.pantheonsorbonne.ufr27.miage.jpa.BillingInfo;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Ticket;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 
 public class InitializeServiceImpl implements InitializeService {
 	
@@ -27,8 +30,28 @@ public class InitializeServiceImpl implements InitializeService {
 	public void initializeDatabase() {
 		
 		EntityTransaction et = em.getTransaction();
+//		et.begin();
+//		
+//		Query q1 = em.createQuery("DELETE FROM AIRPORT");
+//		Query q2 = em.createQuery("DELETE FROM COMPANY");
+//		Query q3 = em.createQuery("DELETE FROM FLIGHT");
+//		Query q4 = em.createQuery("DELETE FROM SEAT");
+//		Query q5 = em.createQuery("DELETE FROM CUSTOMER");
+//		Query q6 = em.createQuery("DELETE FROM ADDRESS");
+//		Query q7 = em.createQuery("DELETE FROM BILLINGINFO");
+//		
+//		q1.executeUpdate();
+//		q2.executeUpdate();
+//		q3.executeUpdate();
+//		q4.executeUpdate();
+//		q5.executeUpdate();
+//		q6.executeUpdate();
+//		q7.executeUpdate();
+//
+//
+//		et.commit();
 		et.begin();
-		
+
 		Airport prs = new Airport();
 		prs.setId(1);
 		prs.setCity("PAR");
@@ -49,7 +72,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		// FLIGHT 1
 		Flight f1 = new Flight();
-		f1.setId(6252);
+		f1.setNumber(6252);
 		f1.setArrival(prs);
 		f1.setDeparture(bdx);
 		f1.setCompany(af);
@@ -64,7 +87,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		/////// FLIGHT 2 ///////
 		Flight f2 = new Flight();
-		f2.setId(6256);
+		f2.setNumber(6256);
 		f2.setArrival(prs);
 		f2.setDeparture(bdx);
 		f2.setCompany(af);
@@ -79,11 +102,11 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		/////// FLIGHT 3 ///////
 		Flight f3 = new Flight();
-		f3.setId(7624);
+		f3.setNumber(6252);
 		f3.setArrival(prs);
 		f3.setDeparture(bdx);
 		f3.setCompany(af);
-		f3.setDate(date);
+		f3.setDate(LocalDate.of(2020,3,12));
 		
 		LocalTime departureTimeF3 = LocalTime.of(12,0);
 		LocalTime arrivalTimeF3 = LocalTime.of(13,10);
@@ -95,8 +118,11 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		List<Seat> seatsf1 = new ArrayList<Seat>();
 		
+		int cptSeat = 1;
+		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f1);
 			s.setAvailable(true);
 			s.setClasse("A");
@@ -106,6 +132,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f1);
 			s.setAvailable(true);
 			s.setClasse("B");
@@ -115,6 +142,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f1);
 			s.setAvailable(true);
 			s.setClasse("C");
@@ -127,8 +155,11 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		List<Seat> seatsf2 = new ArrayList<Seat>();
 		
+		cptSeat = 1;
+		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f2);
 			s.setAvailable(true);
 			s.setClasse("A");
@@ -138,6 +169,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f2);
 			s.setAvailable(true);
 			s.setClasse("B");
@@ -147,6 +179,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f2);
 			s.setAvailable(true);
 			s.setClasse("C");
@@ -159,8 +192,11 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		List<Seat> seatsf3 = new ArrayList<Seat>();
 		
+		cptSeat = 1;
+		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f3);
 			s.setAvailable(true);
 			s.setClasse("A");
@@ -170,6 +206,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f3);
 			s.setAvailable(true);
 			s.setClasse("B");
@@ -179,6 +216,7 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		for(int i=0; i<30; i++) {
 			Seat s = new Seat();
+			s.setNumber(cptSeat++);
 			s.setFlight(f3);
 			s.setAvailable(true);
 			s.setClasse("C");
@@ -192,7 +230,28 @@ public class InitializeServiceImpl implements InitializeService {
 		em.persist(prs);
 		em.persist(bdx);
 		em.persist(af);
-	
+		
+		Address a = new Address();
+		a.setCountry("France");
+		a.setStreetName("Dupont");
+		a.setStreetNumber(5);
+		a.setZipCode("73015");
+		
+		BillingInfo bi = new BillingInfo();
+		bi.setAddress(a);
+		
+		Customer c = new Customer();
+		c.setId(7);
+		c.setFname("Matt");
+		c.setLname("Damon");
+		c.setActive(true);
+		c.setAddress(a);
+		c.setBillingInfo(bi);
+		
+		em.persist(a);
+		em.persist(bi);
+		em.persist(c);
+		
 		et.commit();
 
 		return;

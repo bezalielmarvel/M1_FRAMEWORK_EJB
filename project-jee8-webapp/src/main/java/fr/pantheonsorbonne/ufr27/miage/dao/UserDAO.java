@@ -39,7 +39,7 @@ public class UserDAO {
 		}
 		fr.pantheonsorbonne.ufr27.miage.jpa.Address customerAddress = customer.getAddress();
 		customerAddress.setCountry(address.getCountry());
-		customerAddress.setStreeNumber(address.getStreetNumber());
+		customerAddress.setStreetNumber(address.getStreetNumber());
 		customerAddress.setStreetName(address.getStreetName());
 		customerAddress.setZipCode(address.getZipCode());
 

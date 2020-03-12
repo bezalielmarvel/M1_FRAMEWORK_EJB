@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Address {
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", streetName=" + streetName + ", streeNumber=" + streeNumber + ", zipCode="
+		return "Address [id=" + id + ", streetName=" + streetName + ", streetNumber=" + streetNumber + ", zipCode="
 				+ zipCode + ", country=" + country + "]";
 	}
 	@Id
@@ -28,11 +28,11 @@ public class Address {
 	public void setStreetName(String streetName) {
 		this.streetName = streetName;
 	}
-	public int getStreeNumber() {
-		return streeNumber;
+	public int getStreetNumber() {
+		return streetNumber;
 	}
-	public void setStreeNumber(int streeNumber) {
-		this.streeNumber = streeNumber;
+	public void setStreetNumber(int streetNumber) {
+		this.streetNumber = streetNumber;
 	}
 	public String getZipCode() {
 		return zipCode;
@@ -47,7 +47,7 @@ public class Address {
 		this.country = country;
 	}
 	String streetName;
-	int streeNumber;
+	int streetNumber;
 	String zipCode;
 	String country;
 }
