@@ -39,10 +39,10 @@ public class FlightDAO {
 			throw new NoSuchUserException();
 		}
 		Vol vol = new ObjectFactory().createVol();
-//		vol.setName(flight.getName());
 		return vol;
 
 	}
+	
 	
 	public Flight getFlightFromNumberAndDate(int flightNumber, String date) {
 		
@@ -66,40 +66,9 @@ public class FlightDAO {
 		
 	}
 	
-	public List<Seat> getSeatsFromFlight(int id) {
-		Flight flight = em.find(Flight.class, id);
-		return flight.getSeats();
-	}
-	
-	
-	public List<Seat> getSeatsFromFlight(int id, String classe, boolean available) {
-		Flight flight = em.find(Flight.class, id);
-		return flight.getSeats().stream()
-                .filter(c -> classe.equals(c.getClasse()) && available == c.isAvailable())
-                .collect(Collectors.toList())
-				;
-	}
-	
-	public List<Seat> getSeatsFromFlight(int id, boolean available) {
-		Flight flight = em.find(Flight.class, id);
-		return flight.getSeats().stream()
-                .filter(c -> available == c.isAvailable())
-                .collect(Collectors.toList())
-				;
-	}
-		
-	
-	public List<Seat> getSeatsFromFlight(int id, String classe) {
-		Flight flight = em.find(Flight.class, id);
-		return flight.getSeats().stream()
-                .filter(c -> classe.equals(c.getClasse()))
-                .collect(Collectors.toList())
-				;
-	}
-	
+
 
 	public List<Flight> getFlightFromArrival(String arrival) {
-		
 		
 		int ageMax = 25;
 
@@ -107,19 +76,18 @@ public class FlightDAO {
 
 		CriteriaQuery<Flight> query = builder.createQuery(Flight.class);
 		Root<Flight> i = query.from(Flight.class);
-		//query.select(i);
-		//query.where(builder.equal(i.get("arrival").as(String.class), arrival));
 		
 		
 		Join<Flight, Aeroport> airport = i.join("arrival");
 		query.where(builder.equal(airport.get("IATA"), arrival));
-		
-		
+	
 		
 		List<Flight> flights = em.createQuery(query).getResultList();
 
 		return flights;
+		
 	}
+	
 
 	public List<Flight> getFlights(String arrival, String departure, String date) {
 		

@@ -30,16 +30,16 @@ public class Flight {
 	
 	LocalDate date;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	Airport arrival;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	Airport departure;
 	
 	@OneToMany(mappedBy = "flight")
 	List<Seat> seats = new ArrayList<Seat>();
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	Company company;
 	
 	LocalTime arrivalTime;

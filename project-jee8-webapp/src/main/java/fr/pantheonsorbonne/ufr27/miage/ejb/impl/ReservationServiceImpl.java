@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -10,8 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
@@ -31,26 +34,31 @@ public class ReservationServiceImpl implements ReservationService {
 	FlightDAO dao;
 	
 	@Inject
+	ReservationDAO bookingDao;
+	
+	@Inject
 	PriceComputingService priceService;
 	
 	private static double price = 100;
 	
 	private final static Random rand = new Random();
-
+	
+	private final static String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+	private final static String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+	private final static String NUMBER = "0123456789";
+	private final static String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
+	private final static SecureRandom random = new SecureRandom();
+	    
+	    
 	@Override
 	public Booking createReservation(int flightNumber, int customerId, String classe, String date) {
 
 		//todo rejeter si aucune place disponible
-		
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 
-		Reservation t = new Reservation();
-		t.setCustomer(em.find(Customer.class, customerId));
 		
-		int flightID = dao.getFlightFromNumberAndDate(flightNumber, date).getId();
-		
-		Flight f = em.find(Flight.class, flightID);
+		Flight f  = dao.getFlightFromNumberAndDate(flightNumber, date);
 		
 		double price = priceService.calculatePrice(f).get(classe);
 		
@@ -58,8 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
         .filter(c -> c.isAvailable() == true && classe.equals(c.getClasse()))
         .collect(Collectors.toList());
 		
-		int seatIndex;
-		
+		/*
 		while(true) {
 			Random r = new Random();
 			int random = r.nextInt((seats.size() - 0) + 1) + 0;
@@ -69,19 +76,25 @@ public class ReservationServiceImpl implements ReservationService {
 				break;
 			}
 		}
+		*/
 		
+		Seat s = seats.get(1);
+		s.setAvailable(false);
 		em.persist(f);
-		
-		t.setSeat(seats.get(seatIndex));
+
+		Reservation t = new Reservation();
+		t.setCustomer(em.find(Customer.class, customerId));		
+		t.setSeat(s);
 		t.setPrice(price);
 		t.setPaymentCode();
+		t.setGeneratedId(this.generateReservationID(12));
+
 		
 		Booking b = new ObjectFactory().createBooking();
 		b.setId(t.getId());
 		b.setPaymentCode(t.getPaymentCode());
 		b.setUser(t.getCustomer().getId());
 		
-//		t.setGeneratedId(this.generateReservationID(12));
 //		t.setBooking(b);
 		em.persist(t);
 		
@@ -103,38 +116,41 @@ public class ReservationServiceImpl implements ReservationService {
 //	}
 	
 	@Override
-	public void cancelReservation(String reservationId) {
-		// TODO Auto-generated method stub
-
+	public void cancelReservation(String reservationId) throws NoSuchReservationException  {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		Reservation reservation = bookingDao.getReservationFromId(reservationId);
+		
+		Seat s = reservation.getSeat();
+		s.setAvailable(true);
+		em.persist(s);
+		
+		em.remove(reservation);
+		
+		tx.commit();
+		
 	}
 	
-	public String generateReservationID(int size) {
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < size; i++) {
-			builder.append((char) ('A' + rand.nextInt(25)));
-		}
-
-		return builder.toString();	
-	}
 	
-	private double calculatePrice(Flight f, String classe) {
-		
-		int countUnavailable = f.getSeats().stream()
-                .filter(c -> c.isAvailable() == false)
-                .collect(Collectors.toList()).size();
-		
-		double prxA = price + countUnavailable * 10;
-		
-		if (classe == "A") {
-			return prxA;
-		} else if(classe == "B") {
-			return prxA * 1.10;
-		} else if(classe == "C") {
-			return prxA * 1.21;
-		}
-		
-		return prxA;
-				
+	public String generateReservationID(int length) {
+
+	    if (length < 1) throw new IllegalArgumentException();
+
+	    StringBuilder sb = new StringBuilder(length);
+	    
+	    for (int i = 0; i < length; i++) {
+	        // 0-62 (exclusive), random returns 0-61
+	        int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
+	        char rndChar = DATA_FOR_RANDOM_STRING.charAt(rndCharAt);
+
+	        sb.append(rndChar);
+	    }
+
+	    return sb.toString();
+		    
 	}
+
 
 }

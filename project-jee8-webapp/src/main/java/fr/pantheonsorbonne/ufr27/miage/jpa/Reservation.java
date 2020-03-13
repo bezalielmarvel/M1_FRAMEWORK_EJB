@@ -23,10 +23,10 @@ public class Reservation {
 	
 	String generatedId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	Seat seat;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	Customer customer;
 	
 	boolean isIssued = false;

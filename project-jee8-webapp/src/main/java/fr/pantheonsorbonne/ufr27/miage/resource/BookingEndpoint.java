@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
@@ -37,6 +38,17 @@ public class BookingEndpoint {
 		return service.createReservation(flightNumber, customerId, classe, date);
 	}
 	
+	@POST
+	@Path("/cancel")
+	public Response cancelReservation(@QueryParam("flightId") String flightId) {
+		try {
+			service.cancelReservation(flightId);
+			return Response.ok().build();
+		} catch (NoSuchReservationException e) {
+			return Response.status(404, "No such reservation").build();
+		}
+	}
+		
 //	public Booking getReservation(@QueryParam("customerId") int customerId) {
 //		return service.getReservation(customerId);
 //	}

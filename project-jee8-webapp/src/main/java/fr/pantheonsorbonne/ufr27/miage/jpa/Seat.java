@@ -20,7 +20,7 @@ public class Seat {
 	
 	boolean available = true;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	Flight flight;
 	
 	public int getNumber() {

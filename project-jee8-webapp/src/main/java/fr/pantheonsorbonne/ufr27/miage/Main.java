@@ -27,6 +27,7 @@ import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.UserDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.FlightService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
@@ -82,6 +83,7 @@ public class Main {
 						bind(InvoiceDAO.class).to(InvoiceDAO.class);
 						bind(UserDAO.class).to(UserDAO.class);
 						bind(FlightDAO.class).to(FlightDAO.class);
+						bind(ReservationDAO.class).to(ReservationDAO.class);
 
 						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(PaymentDAO.class).to(PaymentDAO.class);

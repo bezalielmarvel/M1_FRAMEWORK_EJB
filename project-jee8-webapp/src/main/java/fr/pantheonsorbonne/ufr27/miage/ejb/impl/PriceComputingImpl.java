@@ -34,7 +34,7 @@ public class PriceComputingImpl implements PriceComputingService {
 						
 		double prxA = PRICE + unavailableSeats * 10;
 		double prxB = prxA * 1.10;
-		double prxC = prxB * 1.10;
+		double prxC = prxA * 1.21;
 		
 		HashMap<String, Double> prices = new HashMap<String, Double>();
 		prices.put("A",prxA);
