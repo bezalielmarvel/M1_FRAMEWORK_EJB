@@ -14,7 +14,9 @@ import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
+import fr.pantheonsorbonne.ufr27.miage.exception.SeatUnavailableException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
@@ -51,12 +53,11 @@ public class ReservationServiceImpl implements ReservationService {
 	    
 	    
 	@Override
-	public Booking createReservation(int flightNumber, int customerId, String classe, String date) {
+	public Booking createReservation(int flightNumber, int customerId, String classe, String date) throws SeatUnavailableException, NoSuchFlightException {
 
 		//todo rejeter si aucune place disponible
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-
 		
 		Flight f  = dao.getFlightFromNumberAndDate(flightNumber, date);
 		
@@ -65,20 +66,13 @@ public class ReservationServiceImpl implements ReservationService {
 		List<Seat> seats = f.getSeats().stream()
         .filter(c -> c.isAvailable() == true && classe.equals(c.getClasse()))
         .collect(Collectors.toList());
-		
-		/*
-		while(true) {
-			Random r = new Random();
-			int random = r.nextInt((seats.size() - 0) + 1) + 0;
-			if(seats.get(random).isAvailable()) {
-				seatIndex = random;
-				seats.get(random).setAvailable(false);
-				break;
-			}
+
+		//si aucune place n'est disponible
+		if(seats.size() == 0) {
+			throw new SeatUnavailableException();
 		}
-		*/
 		
-		Seat s = seats.get(1);
+		Seat s = seats.get(0);
 		s.setAvailable(false);
 		em.persist(f);
 
@@ -95,7 +89,6 @@ public class ReservationServiceImpl implements ReservationService {
 		b.setPaymentCode(t.getPaymentCode());
 		b.setUser(t.getCustomer().getId());
 		
-//		t.setBooking(b);
 		em.persist(t);
 		
 		tx.commit();
@@ -104,16 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
 		
 	}
 	
-//	@Override
-//	public Booking getReservation(int customerId) {
-//		
-//		EntityTransaction tx = em.getTransaction();
-//		tx.begin();
-//		
-//		
-//		
-//
-//	}
+
 	
 	@Override
 	public void cancelReservation(String reservationId) throws NoSuchReservationException  {

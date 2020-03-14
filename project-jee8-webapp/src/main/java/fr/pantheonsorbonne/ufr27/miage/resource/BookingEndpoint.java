@@ -15,8 +15,10 @@ import javax.ws.rs.core.Response;
 
 import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
+import fr.pantheonsorbonne.ufr27.miage.exception.SeatUnavailableException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Address;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
@@ -30,12 +32,18 @@ public class BookingEndpoint {
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Booking createReservation(
+	public Response createReservation(
 			@QueryParam("flightNumber") int flightNumber, 
 			@QueryParam("customerId") int customerId, 
 			@QueryParam("classe") String classe,
 			@QueryParam("date") String date) {
-		return service.createReservation(flightNumber, customerId, classe, date);
+		try {
+		     return Response.ok(service.createReservation(flightNumber, customerId, classe, date)).build();
+		} catch (SeatUnavailableException e) {
+			return Response.status(404, "Seat unavailable").build();
+		} catch (NoSuchFlightException e) {
+			return Response.status(404, "No such flight").build();
+		}
 	}
 	
 	@POST

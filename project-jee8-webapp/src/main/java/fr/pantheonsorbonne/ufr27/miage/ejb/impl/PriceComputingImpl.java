@@ -1,11 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
@@ -16,12 +21,11 @@ public class PriceComputingImpl implements PriceComputingService {
 	@Inject
 	FlightDAO dao;
 	
+	@Inject
+	ReservationDAO reservationDao;
+	
 	private static float PRICE = 100;
-	
-	private static float TOTAL_SEATS = 90;
-	
-	private static float SEATS_BY_CLASSE = 30;
-
+			
 	
 	@Override
 	public HashMap<String, Double> calculatePrice(Flight flight) {
@@ -31,10 +35,30 @@ public class PriceComputingImpl implements PriceComputingService {
 		long unavailableSeats = seats.stream()
                 .filter(f -> false == f.isAvailable())
                 .count();
-						
-		double prxA = PRICE + unavailableSeats * 10;
-		double prxB = prxA * 1.10;
-		double prxC = prxA * 1.21;
+
+		double prxA=0;
+		double prxB=0;
+		double prxC=0;
+		
+		if(unavailableSeats == 0) {
+			
+			prxA = PRICE;
+			prxB = PRICE * 1.1;
+			prxC = PRICE * 1.21; 
+			
+		} else {
+
+			List<Reservation> r = reservationDao.getReservationsFromFlight(flight);
+			
+	        Reservation rt =  Collections.max(r, Comparator.comparing(s -> s.getCreated()));
+
+			double prx = rt.getPrice();
+
+			prxA = prx + 10;
+			prxB = (prx + 10) * 1.1 ;
+			prxC = (prx + 10) * 1.21;
+			
+		}
 		
 		HashMap<String, Double> prices = new HashMap<String, Double>();
 		prices.put("A",prxA);
@@ -44,5 +68,7 @@ public class PriceComputingImpl implements PriceComputingService {
 		return prices;
 
 	}
+	
 
+	
 }

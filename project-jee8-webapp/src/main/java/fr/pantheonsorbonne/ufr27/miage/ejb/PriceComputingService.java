@@ -8,5 +8,5 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 public interface PriceComputingService {
 	
 	public HashMap<String,Double> calculatePrice(Flight flight);
-
+	
 }

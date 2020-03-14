@@ -8,12 +8,15 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Aeroport;
 
 @ManagedBean
 public class ReservationDAO {
@@ -21,7 +24,6 @@ public class ReservationDAO {
 	@Inject
 	EntityManager em;
 	
-	//to do exception no such reservation
 	public Reservation getReservationFromId(String id) throws NoSuchReservationException  {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -42,6 +44,24 @@ public class ReservationDAO {
 	    } 
 	    
 		return reservation.get(0);
+
+	}
+	
+	public List<Reservation> getReservationsFromFlight(Flight f) {
+
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+
+		CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
+		
+		Root<Reservation> i = query.from(Reservation.class);
+		
+		Join<Reservation, Seat> reservationSeats = i.join("seat");
+
+		query.where(builder.equal(reservationSeats.get("flight"), f));
+		
+		List<Reservation> flights = em.createQuery(query).getResultList();	  
+	    
+		return flights;
 
 	}
 	

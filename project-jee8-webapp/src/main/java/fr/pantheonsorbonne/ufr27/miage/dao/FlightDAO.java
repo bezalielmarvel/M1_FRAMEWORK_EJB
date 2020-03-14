@@ -18,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
@@ -44,7 +45,7 @@ public class FlightDAO {
 	}
 	
 	
-	public Flight getFlightFromNumberAndDate(int flightNumber, String date) {
+	public Flight getFlightFromNumberAndDate(int flightNumber, String date) throws NoSuchFlightException {
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -59,6 +60,10 @@ public class FlightDAO {
 	    query.where(builder.and(p1,p2));
 	    
 		List<Flight> flights = em.createQuery(query).getResultList();
+		
+		if(flights.size() == 0) {
+			throw new NoSuchFlightException();
+		}
 		
 		Flight flight = flights.get(0);
 
