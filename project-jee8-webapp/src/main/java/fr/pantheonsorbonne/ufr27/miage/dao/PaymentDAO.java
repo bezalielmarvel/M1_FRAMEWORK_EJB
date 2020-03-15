@@ -1,18 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.annotation.ManagedBean;
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Payment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 
@@ -34,7 +32,7 @@ public class PaymentDAO {
 
 	}
 	
-	public Reservation getReservationFromPaymentCode(String paymentCode) {
+	public Reservation getReservationFromPaymentCode(String paymentCode) throws NoSuchReservationException {
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -49,6 +47,10 @@ public class PaymentDAO {
 	    
 		List<Reservation> reservations = em.createQuery(query).getResultList();
 		
+	    if (reservations.isEmpty()) {
+	        throw new NoSuchReservationException();
+	    } 
+	    
 		Reservation reservation = reservations.get(0);
 
 		return reservation;

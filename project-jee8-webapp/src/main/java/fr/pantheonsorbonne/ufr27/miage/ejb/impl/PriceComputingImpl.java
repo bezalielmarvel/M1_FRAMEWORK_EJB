@@ -2,9 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,8 +11,8 @@ import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 
 public class PriceComputingImpl implements PriceComputingService {
 

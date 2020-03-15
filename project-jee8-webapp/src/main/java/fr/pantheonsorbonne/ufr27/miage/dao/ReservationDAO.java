@@ -1,6 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -16,7 +15,6 @@ import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Aeroport;
 
 @ManagedBean
 public class ReservationDAO {
@@ -59,9 +57,9 @@ public class ReservationDAO {
 
 		query.where(builder.equal(reservationSeats.get("flight"), f));
 		
-		List<Reservation> flights = em.createQuery(query).getResultList();	  
+		List<Reservation> reservations = em.createQuery(query).getResultList();	  
 	    
-		return flights;
+		return reservations;
 
 	}
 	

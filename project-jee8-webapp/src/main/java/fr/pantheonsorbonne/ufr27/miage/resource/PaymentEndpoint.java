@@ -1,25 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.resource;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ticket;
 
 @Path("payment")
@@ -27,10 +18,28 @@ public class PaymentEndpoint {
 
 	@Inject
 	PaymentService service;
+	
+	
+	@POST
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response payReservation(@QueryParam("paymentCode") String paymentCode) {
+		try {
+			Ticket t = service.payReservation(paymentCode);
+			return Response.ok(t).build();
+		} catch (NoSuchReservationException e) {
+			return Response.status(404, "No such reservation").build();
+		}
+	}
 
-	@Inject
-	PaymentDAO paymentDAO;
-
+	
+	
+	
+	
+	
+	
+	
+	
 //	@POST
 //	@Consumes(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 //	@Path("{userId}")
@@ -56,11 +65,6 @@ public class PaymentEndpoint {
 //		}
 //	}
 	
-	@POST
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Ticket payReservation(@QueryParam("paymentCode") String paymentCode) {
-		return service.payReservation(paymentCode);
-	}
+
 
 }

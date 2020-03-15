@@ -25,24 +25,17 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFFactory;
 import fr.pantheonsorbonne.ufr27.miage.conf.EMFactory;
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.PassengerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ReservationDAO;
-import fr.pantheonsorbonne.ufr27.miage.dao.PassengerDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.FlightService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InitializeService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
-import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PassengerService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.FlightServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.GymServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.InitializeServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.InvoicingServiceImpl;
-import fr.pantheonsorbonne.ufr27.miage.ejb.impl.MailingServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PassengerServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PaymentServiceImpl;
 import fr.pantheonsorbonne.ufr27.miage.ejb.impl.PriceComputingImpl;
@@ -73,23 +66,24 @@ public class Main {
 
 					@Override
 					protected void configure() {
-
-						bind(GymServiceImpl.class).to(GymService.class);
+						
+						
+						//SERVICE LAYER
 						bind(ReservationServiceImpl.class).to(ReservationService.class);
 						bind(FlightServiceImpl.class).to(FlightService.class);
 						bind(PriceComputingImpl.class).to(PriceComputingService.class);
-						
 						bind(InitializeServiceImpl.class).to(InitializeService.class);
 						bind(PaymentServiceImpl.class).to(PaymentService.class);
 						bind(PassengerServiceImpl.class).to(PassengerService.class);
-						bind(InvoicingServiceImpl.class).to(InvoicingService.class);
-						bind(InvoiceDAO.class).to(InvoiceDAO.class);
+
+						
+						//DATA ACCESS
 						bind(PassengerDAO.class).to(PassengerDAO.class);
 						bind(FlightDAO.class).to(FlightDAO.class);
 						bind(ReservationDAO.class).to(ReservationDAO.class);
-
-						bind(MailingServiceImpl.class).to(MailingService.class);
 						bind(PaymentDAO.class).to(PaymentDAO.class);
+						
+						
 						bindFactory(EMFFactory.class).to(EntityManagerFactory.class).in(Singleton.class);
 						bindFactory(EMFactory.class).to(EntityManager.class).in(RequestScoped.class);
 						bindFactory(ConnectionFactorySupplier.class).to(ConnectionFactory.class).in(Singleton.class);
@@ -122,7 +116,7 @@ public class Main {
 		SLF4JBridgeHandler.install();
 		final HttpServer server = startServer();
 
-		//BrokerUtils.startBroker();
+		BrokerUtils.startBroker();
 
 		startH2Console();
 

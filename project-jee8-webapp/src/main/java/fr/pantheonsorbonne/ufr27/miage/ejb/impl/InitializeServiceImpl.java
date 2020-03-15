@@ -3,24 +3,20 @@ package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
 import fr.pantheonsorbonne.ufr27.miage.ejb.InitializeService;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
 import fr.pantheonsorbonne.ufr27.miage.jpa.BillingInfo;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Address;
 
 public class InitializeServiceImpl implements InitializeService {
 	
@@ -30,26 +26,7 @@ public class InitializeServiceImpl implements InitializeService {
 	public void initializeDatabase() {
 		
 		EntityTransaction et = em.getTransaction();
-//		et.begin();
-//		
-//		Query q1 = em.createQuery("DELETE FROM AIRPORT");
-//		Query q2 = em.createQuery("DELETE FROM COMPANY");
-//		Query q3 = em.createQuery("DELETE FROM FLIGHT");
-//		Query q4 = em.createQuery("DELETE FROM SEAT");
-//		Query q5 = em.createQuery("DELETE FROM CUSTOMER");
-//		Query q6 = em.createQuery("DELETE FROM ADDRESS");
-//		Query q7 = em.createQuery("DELETE FROM BILLINGINFO");
-//		
-//		q1.executeUpdate();
-//		q2.executeUpdate();
-//		q3.executeUpdate();
-//		q4.executeUpdate();
-//		q5.executeUpdate();
-//		q6.executeUpdate();
-//		q7.executeUpdate();
-//
-//
-//		et.commit();
+
 		et.begin();
 
 		Airport prs = new Airport();

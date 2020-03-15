@@ -1,30 +1,16 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.Session;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Payment;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ticket;
 
@@ -41,22 +27,43 @@ public class PaymentServiceImpl implements PaymentService {
 	@Inject
 	ReservationService service;
 
-	@Inject
-	InvoiceDAO invoiceDao;
 
-	@Inject
-	private ConnectionFactory connectionFactory;
 
-	@Inject
-	@Named("PaymentQueue")
-	private Queue queue;
-
-	private Connection connection;
-
-	private Session session;
-
+	@Override
+	public Ticket payReservation(String paymentCode) throws NoSuchReservationException {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		Reservation r = paymentDao.getReservationFromPaymentCode(paymentCode);
+		
+		r.setIssued(true);
+		r.setGeneratedId(service.generateReservationID(20));
+		
+		Ticket t = new ObjectFactory().createTicket();
+		
+		t.setGeneratedId(r.getGeneratedId());
+		t.setArrivalAirport(r.getSeat().getFlight().getArrival());
+		t.setArrivalTime(r.getSeat().getFlight().getArrivalTime().toString());
+		t.setClasse(r.getSeat().getClasse());
+		t.setDate(r.getSeat().getFlight().getDate().toString());
+		t.setDepartureAirport(r.getSeat().getFlight().getDeparture());
+		t.setDepartureTime(r.getSeat().getFlight().getDepartureTime().toString());
+		t.setFlightCompany(r.getSeat().getFlight().getCompany().getName());
+		t.setFlightNumber(r.getSeat().getFlight().getNumber());
+		t.setPrix(r.getPrice());
+		t.setSeat(r.getSeat().getNumber());
+		t.setUserFname(r.getPassenger().getFname());
+		t.setUserLname(r.getPassenger().getLname());
+		
+		em.persist(r);
+		
+		tx.commit();
+				
+		return t;
+	}
 	
-	private MessageProducer messageProducer;
+	
 
 //	@PostConstruct
 //	private void init() {
@@ -131,38 +138,5 @@ public class PaymentServiceImpl implements PaymentService {
 //		
 //	}
 
-	@Override
-	public Ticket payReservation(String paymentCode) {
-		
-		EntityTransaction tx = em.getTransaction();
-		tx.begin();
-		
-		Reservation r = paymentDao.getReservationFromPaymentCode(paymentCode);
-		
-		r.setIssued(true);
-		r.setGeneratedId(service.generateReservationID(20));
-		
-		Ticket t = new ObjectFactory().createTicket();
-		
-		t.setGeneratedId(r.getGeneratedId());
-		t.setArrivalAirport(r.getSeat().getFlight().getArrival());
-		t.setArrivalTime(r.getSeat().getFlight().getArrivalTime().toString());
-		t.setClasse(r.getSeat().getClasse());
-		t.setDate(r.getSeat().getFlight().getDate().toString());
-		t.setDepartureAirport(r.getSeat().getFlight().getDeparture());
-		t.setDepartureTime(r.getSeat().getFlight().getDepartureTime().toString());
-		t.setFlightCompany(r.getSeat().getFlight().getCompany().getName());
-		t.setFlightNumber(r.getSeat().getFlight().getNumber());
-		t.setPrix(r.getPrice());
-		t.setSeat(r.getSeat().getNumber());
-		t.setUserFname(r.getPassenger().getFname());
-		t.setUserLname(r.getPassenger().getLname());
-		
-		em.persist(r);
-		
-		tx.commit();
-				
-		return t;
-	}
 
 }

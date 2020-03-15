@@ -1,28 +1,17 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.persistence.CascadeType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.FlightService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
@@ -37,7 +26,7 @@ public class FlightServiceImpl implements FlightService {
 	PriceComputingService service;
 	
 	@Override
-	public List<Vol> getVols(String arrival, String departure, String date) {
+	public List<Vol> getVols(String arrival, String departure, String date) throws NoSuchFlightException {
 		
 		
 		List<Flight> flights = dao.getFlights(arrival, departure, date);
@@ -72,8 +61,6 @@ public class FlightServiceImpl implements FlightService {
 			
 			v.setNbTotalPlacesDisponibles(countAvailable);
 			
-			String typeAvailable = flight.getSeats().stream()
-					.filter(c -> c.isAvailable() == true).toString();
 			
 			int cptA = 0;
 			int cptB = 0;

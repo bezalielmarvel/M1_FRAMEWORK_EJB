@@ -1,9 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb.impl;
 
 import java.security.SecureRandom;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -17,15 +15,12 @@ import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.exception.SeatUnavailableException;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
-import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Vol;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 
 public class ReservationServiceImpl implements ReservationService {
 
@@ -40,10 +35,7 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Inject
 	PriceComputingService priceService;
-	
-	private static double price = 100;
-	
-	private final static Random rand = new Random();
+		
 	
 	private final static String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
 	private final static String CHAR_UPPER = CHAR_LOWER.toUpperCase();
@@ -55,7 +47,6 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public Booking createReservation(int flightNumber, int customerId, String classe, String date) throws SeatUnavailableException, NoSuchFlightException {
 
-		//todo rejeter si aucune place disponible
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		
@@ -123,7 +114,6 @@ public class ReservationServiceImpl implements ReservationService {
 	    StringBuilder sb = new StringBuilder(length);
 	    
 	    for (int i = 0; i < length; i++) {
-	        // 0-62 (exclusive), random returns 0-61
 	        int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
 	        char rndChar = DATA_FOR_RANDOM_STRING.charAt(rndCharAt);
 
