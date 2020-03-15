@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.resource;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
@@ -13,7 +14,7 @@ public class InitEndpoint {
 	@Inject
 	InitializeService service;
 	
-	@GET
+	@POST
 	public Response init() {
 		service.initializeDatabase();
 		return Response.ok().build();
