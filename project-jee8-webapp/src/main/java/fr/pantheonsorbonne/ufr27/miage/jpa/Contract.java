@@ -66,13 +66,13 @@ public class Contract {
 	Set<Card> cards;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	Customer customer;
+	Passenger customer;
 
-	public Customer getCustomer() {
+	public Passenger getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(Passenger customer) {
 		this.customer = customer;
 	}
 

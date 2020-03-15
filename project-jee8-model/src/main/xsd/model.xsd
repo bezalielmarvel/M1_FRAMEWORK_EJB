@@ -109,7 +109,19 @@
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:int"></xsd:element>
 			<xsd:element name="paymentCode" type="xsd:string"></xsd:element>
-			<xsd:element name="user" type="xsd:int"></xsd:element>
+			<xsd:element name="passengerId" type="xsd:int"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="passenger">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:int"></xsd:element>
+			<xsd:element name="firstName" type="xsd:string"></xsd:element>
+			<xsd:element name="lastName" type="xsd:string"></xsd:element>
+			<xsd:element name="address" type="xsd:string"></xsd:element>
+			<xsd:element name="seatNumber" type="xsd:int"></xsd:element>
+			<xsd:element name="classe" type="xsd:string"></xsd:element>
+			<xsd:element name="generatedID" type="xsd:string"></xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -127,6 +139,7 @@
 	
 	<xsd:element name="place" type="place"></xsd:element>
 	<xsd:element name="aeroport" type="aeroport"></xsd:element>
+	<xsd:element name="passenger" type="passenger"></xsd:element>
 	<xsd:element name="vol" type="vol"></xsd:element>
 	<xsd:element name="ticket" type="ticket"></xsd:element>
 	<xsd:element name="booking" type="booking"></xsd:element>

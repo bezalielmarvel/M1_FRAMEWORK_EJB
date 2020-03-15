@@ -19,7 +19,7 @@ import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.exception.SeatUnavailableException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
@@ -77,19 +77,17 @@ public class ReservationServiceImpl implements ReservationService {
 		em.persist(f);
 
 		Reservation t = new Reservation();
-		t.setCustomer(em.find(Customer.class, customerId));		
+		t.setPassenger(em.find(Passenger.class, customerId));	
 		t.setSeat(s);
 		t.setPrice(price);
 		t.setPaymentCode();
 		t.setGeneratedId(this.generateReservationID(12));
-
+		em.persist(t);
 		
 		Booking b = new ObjectFactory().createBooking();
 		b.setId(t.getId());
 		b.setPaymentCode(t.getPaymentCode());
-		b.setUser(t.getCustomer().getId());
-		
-		em.persist(t);
+		b.setPassengerId(t.getPassenger().getId());
 		
 		tx.commit();
 

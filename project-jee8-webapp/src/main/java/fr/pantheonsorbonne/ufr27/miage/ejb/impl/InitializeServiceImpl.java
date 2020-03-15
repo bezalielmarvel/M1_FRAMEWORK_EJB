@@ -16,7 +16,7 @@ import fr.pantheonsorbonne.ufr27.miage.ejb.InitializeService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
 import fr.pantheonsorbonne.ufr27.miage.jpa.BillingInfo;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
@@ -233,24 +233,33 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		Address a = new Address();
 		a.setCountry("France");
-		a.setStreetName("Dupont");
+		a.setStreetName("rue Leblanc");
 		a.setStreetNumber(5);
-		a.setZipCode("73015");
+		a.setZipCode("75015");
 		
 		BillingInfo bi = new BillingInfo();
 		bi.setAddress(a);
 		
-		Customer c = new Customer();
+		Passenger c = new Passenger();
 		c.setId(7);
-		c.setFname("Matt");
-		c.setLname("Damon");
+		c.setFname("Brad");
+		c.setLname("Pitt");
 		c.setActive(true);
 		c.setAddress(a);
 		c.setBillingInfo(bi);
 		
+		Passenger c2 = new Passenger();
+		c2.setId(8);
+		c2.setFname("Angelina");
+		c2.setLname("Jolie");
+		c2.setActive(true);
+		c2.setAddress(a);
+		c2.setBillingInfo(bi);
+		
 		em.persist(a);
 		em.persist(bi);
 		em.persist(c);
+		em.persist(c2);
 		
 		et.commit();
 

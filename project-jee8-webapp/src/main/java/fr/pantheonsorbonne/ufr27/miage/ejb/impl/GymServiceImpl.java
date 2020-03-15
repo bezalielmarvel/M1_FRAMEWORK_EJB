@@ -15,11 +15,11 @@ import javax.persistence.EntityManager;
 import fr.pantheonsorbonne.ufr27.miage.dao.InvoiceDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.GymService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
 import fr.pantheonsorbonne.ufr27.miage.exception.UserHasDebtException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Card;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 
 @ManagedBean
 public class GymServiceImpl implements GymService {
@@ -32,7 +32,7 @@ public class GymServiceImpl implements GymService {
 
 	@Override
 	public int createMembership(String lname, String fname) {
-		Customer customer = new Customer();
+		Passenger customer = new Passenger();
 		customer.setLname(lname);
 		customer.setFname(fname);
 
@@ -60,12 +60,12 @@ public class GymServiceImpl implements GymService {
 	InvoiceDAO invoiceDao;
 
 	@Override
-	public void cancelMemberShip(int userId) throws UserHasDebtException, NoSuchUserException {
+	public void cancelMemberShip(int userId) throws UserHasDebtException, NoSuchPassengerException {
 		em.getTransaction().begin();
-		Customer customer = em.find(Customer.class, userId);
+		Passenger customer = em.find(Passenger.class, userId);
 
 		if (!customer.isActive()) {
-			throw new NoSuchUserException();
+			throw new NoSuchPassengerException();
 		}
 
 		double debt = invoiceDao.getUserDebt(userId);

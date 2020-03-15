@@ -19,6 +19,8 @@ import javax.persistence.OneToOne;
 import fr.pantheonsorbonne.ufr27.miage.dao.FlightDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.FlightService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PriceComputingService;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
@@ -101,5 +103,13 @@ public class FlightServiceImpl implements FlightService {
 		
 		return vols;
 	}
+	
+	public void deleteFlight(int flightNumber, String date) throws NoSuchFlightException {
+			
+		Flight f = dao.getFlightFromNumberAndDate(flightNumber, date);
+		dao.deleteFlight(f.getId());
 
-}
+		return;
+	}
+}	
+

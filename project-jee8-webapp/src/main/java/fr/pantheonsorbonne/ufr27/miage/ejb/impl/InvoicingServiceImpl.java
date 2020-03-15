@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import fr.pantheonsorbonne.ufr27.miage.ejb.InvoicingService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.MailingService;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Contract;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Invoice;
 
 @Stateless
@@ -28,7 +28,7 @@ public class InvoicingServiceImpl implements InvoicingService {
 	@Override
 	public void sendNextInvoice(int customerId) {
 		em.getTransaction().begin();
-		Customer customer = em.find(Customer.class, customerId);
+		Passenger customer = em.find(Passenger.class, customerId);
 		LocalDateTime today = LocalDateTime.now();
 		Set<Contract> contracts = customer.getContracts();
 		for (Contract contract : contracts) {

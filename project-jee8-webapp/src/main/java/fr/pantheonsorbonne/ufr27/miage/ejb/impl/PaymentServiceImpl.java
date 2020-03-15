@@ -20,8 +20,8 @@ import fr.pantheonsorbonne.ufr27.miage.dao.PaymentDAO;
 import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.ejb.ReservationService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
-import fr.pantheonsorbonne.ufr27.miage.jpa.Customer;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Passenger;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Payment;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
@@ -155,8 +155,8 @@ public class PaymentServiceImpl implements PaymentService {
 		t.setFlightNumber(r.getSeat().getFlight().getNumber());
 		t.setPrix(r.getPrice());
 		t.setSeat(r.getSeat().getNumber());
-		t.setUserFname(r.getCustomer().getFname());
-		t.setUserLname(r.getCustomer().getLname());
+		t.setUserFname(r.getPassenger().getFname());
+		t.setUserLname(r.getPassenger().getLname());
 		
 		em.persist(r);
 		

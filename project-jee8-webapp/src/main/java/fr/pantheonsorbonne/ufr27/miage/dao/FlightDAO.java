@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -19,8 +22,9 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchFlightException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Airport;
+import fr.pantheonsorbonne.ufr27.miage.jpa.Company;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Flight;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Aeroport;
@@ -33,11 +37,11 @@ public class FlightDAO {
 	@Inject
 	EntityManager em;
 
-	public Vol getFlightFromId(int id) throws NoSuchUserException {
+	public Vol getFlightFromId(int id) throws NoSuchPassengerException {
 
 		Flight flight = em.find(Flight.class, id);
 		if(flight==null) {
-			throw new NoSuchUserException();
+			throw new NoSuchPassengerException();
 		}
 		Vol vol = new ObjectFactory().createVol();
 		return vol;
@@ -120,5 +124,28 @@ public class FlightDAO {
 		
 		return flights;
 
+	}
+
+	
+	public void deleteFlight(int flightId) throws NoSuchFlightException {
+		
+		em.getTransaction().begin();
+		Flight f = em.find(Flight.class, flightId);
+		
+		if(f==null) {
+			throw new NoSuchFlightException();
+		}
+		
+		List<Seat> seats = f.getSeats();
+		
+		for(Seat s : seats) {
+			em.remove(s);
+		}
+		
+		em.remove(f);
+		em.getTransaction().commit();
+		
+		return;
+		
 	}
 }

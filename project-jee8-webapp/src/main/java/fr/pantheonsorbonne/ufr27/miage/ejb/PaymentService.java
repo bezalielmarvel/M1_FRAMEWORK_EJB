@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.ejb;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.NoDebtException;
-import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchUserException;
+import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchPassengerException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ccinfo;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ticket;
 

@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Customer {
+public class Passenger {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +25,6 @@ public class Customer {
 	Address address;
 
 	@OneToOne
-
 	BillingInfo billingInfo;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")

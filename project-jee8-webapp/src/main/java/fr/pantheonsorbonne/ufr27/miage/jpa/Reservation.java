@@ -32,7 +32,7 @@ public class Reservation {
 	Seat seat;
 
 	@OneToOne()
-	Customer customer;
+	Passenger passenger;
 	
 	private Date created;
 	
@@ -88,6 +88,13 @@ public class Reservation {
 		this.generatedId = generatedId;
 	}
 
+	public Passenger getPassenger() {
+		return passenger;
+	}
+
+	public void setPassenger(Passenger passenger) {
+		this.passenger = passenger;
+	}
 
 	public Seat getSeat() {
 		return seat;
@@ -95,14 +102,6 @@ public class Reservation {
 
 	public void setSeat(Seat seat) {
 		this.seat = seat;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 	public double getPrice() {
