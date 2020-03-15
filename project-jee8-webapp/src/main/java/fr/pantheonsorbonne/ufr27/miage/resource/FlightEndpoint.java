@@ -32,12 +32,12 @@ public class FlightEndpoint {
 	@GET
 	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response getVols(
-			@QueryParam("arrival") String arrival, 
 			@QueryParam("departure") String departure, 
+			@QueryParam("arrival") String arrival, 
 			@QueryParam("date") String date) throws ParseException {
 		
 			try {
-				List<Vol> vols = service.getVols(arrival,departure,date);
+				List<Vol> vols = service.getVols(departure,arrival,date);
 		        GenericEntity<List<Vol>> list = new GenericEntity<List<Vol>>(vols) {};
 				return Response.ok(list).build();
 			} catch (NoSuchFlightException e) {

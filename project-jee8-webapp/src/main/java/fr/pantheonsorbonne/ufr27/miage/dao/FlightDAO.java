@@ -53,7 +53,7 @@ public class FlightDAO {
 	}
 	
 
-	public List<Flight> getFlights(String arrival, String departure, String date) throws NoSuchFlightException {
+	public List<Flight> getFlights(String departure, String arrival, String date) throws NoSuchFlightException {
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -62,8 +62,8 @@ public class FlightDAO {
 		Root<Flight> i = query.from(Flight.class);
 		
 		
-	    Join<Flight, Aeroport> joinOrg = i.join("arrival");
-	    Join<Flight, Aeroport> joinRoles = i.join("departure");
+	    Join<Flight, Aeroport> joinOrg = i.join("departure");
+	    Join<Flight, Aeroport> joinRoles = i.join("arrival");
 	    
 	    
 	    Predicate p1 = builder.equal(joinRoles.get("IATA"),arrival);

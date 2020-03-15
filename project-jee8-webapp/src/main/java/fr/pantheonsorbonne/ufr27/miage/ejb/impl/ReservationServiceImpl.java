@@ -21,6 +21,7 @@ import fr.pantheonsorbonne.ufr27.miage.jpa.Reservation;
 import fr.pantheonsorbonne.ufr27.miage.jpa.Seat;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Booking;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.ObjectFactory;
+import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ticket;
 
 public class ReservationServiceImpl implements ReservationService {
 
@@ -85,7 +86,6 @@ public class ReservationServiceImpl implements ReservationService {
 		return b;
 		
 	}
-	
 
 	
 	@Override
@@ -122,6 +122,38 @@ public class ReservationServiceImpl implements ReservationService {
 
 	    return sb.toString();
 		    
+	}
+
+
+	@Override
+	public Ticket getTicketFromId(String reservationId) throws NoSuchReservationException {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		Reservation r = bookingDao.getReservationFromId(reservationId);
+		
+		Ticket t = new ObjectFactory().createTicket();
+		
+		t.setGeneratedId(r.getGeneratedId());
+		t.setArrivalAirport(r.getSeat().getFlight().getArrival());
+		t.setArrivalTime(r.getSeat().getFlight().getArrivalTime().toString());
+		t.setClasse(r.getSeat().getClasse());
+		t.setDate(r.getSeat().getFlight().getDate().toString());
+		t.setDepartureAirport(r.getSeat().getFlight().getDeparture());
+		t.setDepartureTime(r.getSeat().getFlight().getDepartureTime().toString());
+		t.setFlightCompany(r.getSeat().getFlight().getCompany().getName());
+		t.setFlightNumber(r.getSeat().getFlight().getNumber());
+		t.setPrix(r.getPrice());
+		t.setSeat(r.getSeat().getNumber());
+		t.setUserFname(r.getPassenger().getFname());
+		t.setUserLname(r.getPassenger().getLname());
+		
+		em.persist(r);
+		
+		tx.commit();
+				
+		return t;
 	}
 
 

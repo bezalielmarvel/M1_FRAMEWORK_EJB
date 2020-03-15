@@ -26,10 +26,10 @@ public class FlightServiceImpl implements FlightService {
 	PriceComputingService service;
 	
 	@Override
-	public List<Vol> getVols(String arrival, String departure, String date) throws NoSuchFlightException {
+	public List<Vol> getVols(String departure, String arrival, String date) throws NoSuchFlightException {
 		
 		
-		List<Flight> flights = dao.getFlights(arrival, departure, date);
+		List<Flight> flights = dao.getFlights(departure, arrival, date);
 		
 		List<Vol> vols = new ArrayList<Vol>();
 		
@@ -52,6 +52,9 @@ public class FlightServiceImpl implements FlightService {
 			v.setPrixClasseA(prices.get("A"));
 			v.setPrixClasseB(prices.get("B"));			
 			v.setPrixClasseC(prices.get("C"));
+			
+			System.out.println("dep " + v.getDepartureAirport());
+			System.out.println("arr " + v.getArrivalAirport());
 			
 			
 			int countAvailable = flight.getSeats().stream()

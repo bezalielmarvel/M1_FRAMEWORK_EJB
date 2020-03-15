@@ -51,8 +51,8 @@ public class InitializeServiceImpl implements InitializeService {
 		// FLIGHT 1
 		Flight f1 = new Flight();
 		f1.setNumber(6252);
-		f1.setArrival(prs);
-		f1.setDeparture(bdx);
+		f1.setArrival(bdx);
+		f1.setDeparture(prs);
 		f1.setCompany(af);
 		f1.setDate(date);
 		
@@ -66,8 +66,8 @@ public class InitializeServiceImpl implements InitializeService {
 		/////// FLIGHT 2 ///////
 		Flight f2 = new Flight();
 		f2.setNumber(6256);
-		f2.setArrival(prs);
-		f2.setDeparture(bdx);
+		f2.setArrival(bdx);
+		f2.setDeparture(prs);
 		f2.setCompany(af);
 		f2.setDate(date);
 		
@@ -80,11 +80,11 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		/////// FLIGHT 3 ///////
 		Flight f3 = new Flight();
-		f3.setNumber(6252);
-		f3.setArrival(prs);
-		f3.setDeparture(bdx);
+		f3.setNumber(7435);
+		f3.setArrival(bdx);
+		f3.setDeparture(prs);
 		f3.setCompany(af);
-		f3.setDate(LocalDate.of(2020,3,12));
+		f3.setDate(date);
 		
 		LocalTime departureTimeF3 = LocalTime.of(12,0);
 		LocalTime arrivalTimeF3 = LocalTime.of(13,10);
@@ -231,8 +231,8 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		Passenger c = new Passenger();
 		c.setId(7);
-		c.setFname("Brad");
-		c.setLname("Pitt");
+		c.setFname("Christen");
+		c.setLname("Sivakolunthu");
 		c.setActive(true);
 		c.setContactInfo(info);
 		c.setBillingInfo(bi);
@@ -240,8 +240,8 @@ public class InitializeServiceImpl implements InitializeService {
 		
 		Passenger c2 = new Passenger();
 		c2.setId(8);
-		c2.setFname("Angelina");
-		c2.setLname("Jolie");
+		c2.setFname("Bezaliel");
+		c2.setLname("Marvel");
 		c2.setActive(true);
 		c2.setContactInfo(inf);
 		c2.setBillingInfo(bi);

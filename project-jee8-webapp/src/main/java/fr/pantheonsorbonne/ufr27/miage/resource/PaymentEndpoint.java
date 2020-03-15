@@ -13,7 +13,7 @@ import fr.pantheonsorbonne.ufr27.miage.ejb.PaymentService;
 import fr.pantheonsorbonne.ufr27.miage.exception.NoSuchReservationException;
 import fr.pantheonsorbonne.ufr27.miage.model.jaxb.Ticket;
 
-@Path("payment")
+@Path("/payment")
 public class PaymentEndpoint {
 
 	@Inject
@@ -31,13 +31,6 @@ public class PaymentEndpoint {
 			return Response.status(404, "No such reservation").build();
 		}
 	}
-
-	
-	
-	
-	
-	
-	
 	
 	
 //	@POST
