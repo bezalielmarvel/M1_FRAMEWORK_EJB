@@ -20,6 +20,7 @@ public class PaymentEndpoint {
 	PaymentService service;
 	
 	
+	/* PAIEMENT D'UNE RESERVATION */
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

@@ -21,6 +21,7 @@ public class BookingEndpoint {
 	ReservationService service;
 	
 	
+	/* CREATION D'UNE RESERVATION */
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -39,6 +40,7 @@ public class BookingEndpoint {
 	}
 	
 	
+	/* ANNULATION D'UNE RESERVATION */
 	@POST
 	@Path("/cancel")
 	public Response cancelReservation(@QueryParam("reservationId") String reservationId) {

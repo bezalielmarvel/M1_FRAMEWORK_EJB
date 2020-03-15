@@ -29,6 +29,7 @@ public class FlightEndpoint {
 	FlightService service;
 
 	
+	/* LISTE DES VOLS */
 	@GET
 	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response getVols(
@@ -46,18 +47,8 @@ public class FlightEndpoint {
 	}
 	
 	
-	@DELETE
-	@Path("/{flightId}")
-	public Response deleteFlightById(@PathParam("flightId") int flightId) {
-		try {
-			dao.deleteFlight(flightId);
-			return Response.ok().build();
-		} catch (NoSuchFlightException e) {
-			return Response.status(404, "No such flight").build();
-		}
-	}
-	
-	
+
+	/* SUPPRESSION D'UN VOL */	
 	@DELETE
 	public Response deleteFlight(
 			@QueryParam("flightNumber") int flightNumber,

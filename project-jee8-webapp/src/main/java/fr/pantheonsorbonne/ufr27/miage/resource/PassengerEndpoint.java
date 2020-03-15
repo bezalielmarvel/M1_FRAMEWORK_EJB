@@ -21,6 +21,7 @@ public class PassengerEndpoint {
 	@Inject
 	PassengerService service;
 	
+	/* LISTE DES PASSAGERS D'UN VOL */
 	@GET
 	@Path("/flight/{flightNumber}/date/{flightDate}")
 	@Produces(value = { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

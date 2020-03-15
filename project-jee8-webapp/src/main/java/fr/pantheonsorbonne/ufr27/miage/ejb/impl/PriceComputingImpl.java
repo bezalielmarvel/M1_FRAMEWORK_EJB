@@ -24,7 +24,7 @@ public class PriceComputingImpl implements PriceComputingService {
 	
 	private static float PRICE = 100;
 			
-	
+	//RETOURNE HASHMAP CLASSE: PRIX
 	@Override
 	public HashMap<String, Double> calculatePrice(Flight flight) {
 
@@ -48,6 +48,7 @@ public class PriceComputingImpl implements PriceComputingService {
 
 			List<Reservation> r = reservationDao.getReservationsFromFlight(flight);
 			
+			//Reservation la plus récente
 	        Reservation rt =  Collections.max(r, Comparator.comparing(s -> s.getCreated()));
 
 			double prx = rt.getPrice();

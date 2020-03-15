@@ -1,7 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.jpa;
 
 import javax.persistence.Embeddable;
-import javax.persistence.OneToOne;
 
 @Embeddable
 public class ContactInformation {

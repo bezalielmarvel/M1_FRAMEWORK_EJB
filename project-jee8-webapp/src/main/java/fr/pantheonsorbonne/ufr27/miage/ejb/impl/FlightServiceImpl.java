@@ -53,10 +53,6 @@ public class FlightServiceImpl implements FlightService {
 			v.setPrixClasseB(prices.get("B"));			
 			v.setPrixClasseC(prices.get("C"));
 			
-			System.out.println("dep " + v.getDepartureAirport());
-			System.out.println("arr " + v.getArrivalAirport());
-			
-			
 			int countAvailable = flight.getSeats().stream()
 	                .filter(c -> c.isAvailable() == true)
 	                .collect(Collectors.toList()).size()

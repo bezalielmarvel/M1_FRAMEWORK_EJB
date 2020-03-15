@@ -27,8 +27,10 @@ public class PassengerServiceImpl implements PassengerService {
 	public List<Passenger> getPassengersOnFlight(int flightNumber, String date) throws NoSuchFlightException {
 
 		List<Passenger> passengers = new ArrayList<Passenger>();
-		
+			
 			Flight f = flightDao.getFlightFromNumberAndDate(flightNumber, date);
+			
+			//Liste des réservations du vol
 			List<Reservation> reservations = reservationDao.getReservationsFromFlight(f);
 			
 			for (Reservation r : reservations) {
