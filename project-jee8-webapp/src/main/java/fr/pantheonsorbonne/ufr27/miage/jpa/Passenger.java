@@ -3,7 +3,11 @@ package fr.pantheonsorbonne.ufr27.miage.jpa;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,8 +25,9 @@ public class Passenger {
 	String lname;
 	String fname;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	Address address;
+	@Embedded
+	@OneToOne()
+	ContactInformation contactInfo;
 
 	@OneToOne
 	BillingInfo billingInfo;
@@ -31,6 +36,11 @@ public class Passenger {
 	Set<Contract> contracts = new HashSet<>();
 
 	boolean isActive = true;
+
+
+	public Passenger() {
+		super();
+	}
 
 	public boolean isActive() {
 		return isActive;
@@ -64,12 +74,12 @@ public class Passenger {
 		this.fname = fname;
 	}
 
-	public Address getAddress() {
-		return address;
+	public ContactInformation getContactInfo() {
+		return contactInfo;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setContactInfo(ContactInformation contactInfo) {
+		this.contactInfo = contactInfo;
 	}
 
 	public BillingInfo getBillingInfo() {
@@ -87,5 +97,6 @@ public class Passenger {
 	public void setContracts(Set<Contract> contracts) {
 		this.contracts = contracts;
 	}
+
 
 }

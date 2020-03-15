@@ -40,7 +40,7 @@ public class PassengerServiceImpl implements PassengerService {
 				p.setSeatNumber(r.getSeat().getNumber());
 				p.setClasse(r.getSeat().getClasse());
 				
-				Address a = r.getPassenger().getAddress();
+				Address a = r.getPassenger().getContactInfo().getAddress();
 				p.setAddress(
 						a.getStreetNumber() + " " + 
 						a.getStreetName() + " " + 
