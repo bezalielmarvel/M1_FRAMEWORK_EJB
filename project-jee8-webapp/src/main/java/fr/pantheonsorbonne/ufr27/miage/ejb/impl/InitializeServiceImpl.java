@@ -230,6 +230,7 @@ public class InitializeServiceImpl implements InitializeService {
 		bi.setAddress(a);
 		
 		Passenger c = new Passenger();
+		c.setId(7);
 		c.setFname("Brad");
 		c.setLname("Pitt");
 		c.setActive(true);
@@ -238,6 +239,7 @@ public class InitializeServiceImpl implements InitializeService {
 
 		
 		Passenger c2 = new Passenger();
+		c2.setId(8);
 		c2.setFname("Angelina");
 		c2.setLname("Jolie");
 		c2.setActive(true);
